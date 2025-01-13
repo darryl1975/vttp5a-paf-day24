@@ -11,7 +11,7 @@ import sg.edu.nus.iss.vttp5a_paf_day24.repository.BankAccountRepo;
 
 @Service
 public class BankAccountService {
-    
+
     @Autowired
     BankAccountRepo bankAccountRepo;
 
@@ -24,7 +24,7 @@ public class BankAccountService {
     }
 
     @Transactional
-    public void transfer(int transfererAccountId, int transfereeAccountId, float transferAmount) {
+    public Boolean transfer(int transfererAccountId, int transfereeAccountId, float transferAmount) {
         // retrieve both accounts
         BankAccount accountFrom = bankAccountRepo.getAccountById(transfererAccountId);
         BankAccount accountTo = bankAccountRepo.getAccountById(transfereeAccountId);
@@ -38,19 +38,27 @@ public class BankAccountService {
 
         // logic to decide whether to continue to perform the transaction
         if (isAccountFromActive && isAccountToActive && isTransfererBalanceSufficient) {
-            // must be perfrom in transaction
+            // must be perform in transaction (@Transactional at this function level)
             // perform withdrawal from transferer
+            accountFrom.setBalance(accountFrom.getBalance() - transferAmount);
+            bankAccountRepo.updateAccountById(accountFrom);
 
             // perform deposit to transferee
+            accountTo.setBalance(accountTo.getBalance() + transferAmount);
+            bankAccountRepo.updateAccountById(accountTo);
+
+            return true;
         }
 
+        return false;
     }
 
     private Boolean checkAccountActive(BankAccount account) {
         if (account.getIsActive().equals(true))
             return true;
-        
-        throw new AccountInactiveException("Account ID " + account.getId() + " - " + account.getFullName() + " is inactive.");
+
+        throw new AccountInactiveException(
+                "Account ID " + account.getId() + " - " + account.getFullName() + " is inactive.");
     }
 
     private Boolean checkSufficientBalance(BankAccount account, float transferAmount) {
@@ -58,6 +66,7 @@ public class BankAccountService {
         if (isSufficientFund)
             return true;
 
-        throw new InsufficientBalanceException("Transferer " + account.getFullName() + " doesn't not have sufficient fund to make the transfer.");
+        throw new InsufficientBalanceException(
+                "Transferer " + account.getFullName() + " doesn't not have sufficient fund to make the transfer.");
     }
 }
