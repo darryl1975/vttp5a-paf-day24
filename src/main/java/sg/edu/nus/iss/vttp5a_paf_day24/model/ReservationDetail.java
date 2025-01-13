@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReservationDetail {
     
+    // auto generated (increment in DB)
     private int id;
 
+    // must a valid book record
     private Book book;
 
+    // no information on create new
     private Reservation reservation;
 }

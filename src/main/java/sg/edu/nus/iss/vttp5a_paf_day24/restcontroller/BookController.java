@@ -31,7 +31,7 @@ public class BookController {
         return ResponseEntity.ok().body(bookRepo.getAllBooks());
     }
 
-    @GetMapping("/{bookid}")
+    @GetMapping("/{book-id}")
     public ResponseEntity<Book> getBookById(@PathVariable("book-id") Integer bookId) {
         return ResponseEntity.ok().body(bookRepo.getBookById(bookId));
     }

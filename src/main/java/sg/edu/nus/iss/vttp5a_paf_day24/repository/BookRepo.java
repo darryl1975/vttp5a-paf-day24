@@ -16,6 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import sg.edu.nus.iss.vttp5a_paf_day24.model.Book;
+import sg.edu.nus.iss.vttp5a_paf_day24.model.exception.BookNotFoundException;
 import sg.edu.nus.iss.vttp5a_paf_day24.utils.Query;
 
 @Repository
@@ -51,7 +52,7 @@ public class BookRepo {
         List<Book> books = template.query(Query.getBooksSql, BeanPropertyRowMapper.newInstance(Book.class));
 
         if (books.isEmpty()) {
-            // throw new BookNotfounException(".....");
+            throw new BookNotFoundException("No found in reserved");
         }
 
         return books;
@@ -63,7 +64,7 @@ public class BookRepo {
         try {
             book = template.queryForObject(Query.getBookById, BeanPropertyRowMapper.newInstance(Book.class), bookId);
         } catch (DataAccessException ex) {
-            // throw new BookNotFoundException("....");
+            throw new BookNotFoundException("Book Not Found!!!");
         }
 
 

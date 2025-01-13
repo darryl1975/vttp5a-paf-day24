@@ -23,4 +23,9 @@ public class Query {
     public static final String updateBookById = "update book set title = ?, quantity = ? where id = ?";
 
     public static final String updateBookStatusById = "update book set isActive = ? where id = ?";
+
+    public static final String insertReservation = "insert into reservation(full_name, reserve_date) values (?, ?)";
+
+    public static final String insertReservationDetail = "insert into reservationdetail (book_id, reservation_id) values (?, ?)";
+    
 }

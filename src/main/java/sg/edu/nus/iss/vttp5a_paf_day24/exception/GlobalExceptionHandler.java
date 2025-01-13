@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import sg.edu.nus.iss.vttp5a_paf_day24.model.exception.AccountInactiveException;
+import sg.edu.nus.iss.vttp5a_paf_day24.model.exception.BookNotFoundException;
 import sg.edu.nus.iss.vttp5a_paf_day24.model.exception.ErrorMessage;
 import sg.edu.nus.iss.vttp5a_paf_day24.model.exception.InsufficientBalanceException;
 
@@ -55,5 +56,11 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+ 
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleBookNotFoundException(BookNotFoundException ex, HttpServletRequest request, HttpServletResponse response) {
+        ErrorMessage message = new ErrorMessage(404, ex.getMessage(), new Date(), request.getRequestURI());
+
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
