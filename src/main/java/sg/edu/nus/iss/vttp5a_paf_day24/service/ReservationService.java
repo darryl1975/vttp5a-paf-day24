@@ -22,12 +22,13 @@ public class ReservationService {
         // already in transaction based on the @Transactional annotation.
 
         // create the reservation record
-        reservationRepo.createReservation(reservation);
+        int iReservationId = reservationRepo.createReservation(reservation);
 
         // uncomment to simulate error
         // throw new IllegalArgumentException("Simulate error after creating Reservation...");
 
         // created the reservation detail record
+        reservationDetail.getReservation().setId(iReservationId);
         reservationRepo.createReservationDetails(reservationDetail);
 
         // uncomment to simulate error
