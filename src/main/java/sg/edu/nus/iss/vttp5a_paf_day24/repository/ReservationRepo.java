@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.vttp5a_paf_day24.repository;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -56,5 +55,4 @@ public class ReservationRepo {
         return false;
         
     }
-
 }
